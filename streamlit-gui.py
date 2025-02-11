@@ -15,14 +15,12 @@ def create_gui():
             value=0,
             min_value=1
         )
-        st.write(f"Total Universe: {total_universe:,}")  # Display formatted number below
         
         total_impressions = st.number_input(
             "Total Impressions",
             value=0,
             min_value=1
         )
-        st.write(f"Total Impressions: {total_impressions:,}")  # Display formatted number below
     
     with col2:
         max_reach_percent = st.number_input(
@@ -58,9 +56,6 @@ def create_gui():
         [[channel, impressions] for channel, impressions in default_channels.items()],
         columns=['Channel', 'Impressions']
     )
-    
-    # Format the impressions column with commas before displaying
-    df['Impressions'] = df['Impressions'].apply(lambda x: f"{x:,}")
     
     # Create an editable dataframe with locked channel names
     edited_df = st.data_editor(
@@ -134,7 +129,7 @@ def create_gui():
         with col1:
             st.metric("Final Reach %", f"{results['final_reach_percent']:.1f}%")
         with col2:
-            st.metric("Final Reach (Individuals)", f"{results['final_reach']:,.0f}")
+            st.metric("Final Reach (Individuals)", f"{results['final_reach']:.0f}")
         with col3:
             st.metric("Average Frequency", f"{results['average_frequency']:.1f}")
         

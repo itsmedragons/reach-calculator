@@ -12,26 +12,25 @@ def create_gui():
     with col1:
         total_universe = st.number_input(
             "Total Universe", 
-            value=0,
+            value=68500000,
             min_value=1
         )
-        
         total_impressions = st.number_input(
             "Total Impressions",
-            value=0,
+            value=611065006,
             min_value=1
         )
     
     with col2:
         max_reach_percent = st.number_input(
             "Maximum Reach %",
-            value=0.0,
+            value=98.8,
             min_value=0.0,
             max_value=100.0
         )
         global_overlap_factor = st.number_input(
             "Global Overlap Factor",
-            value=0.0,
+            value=0.5,
             min_value=0.0,
             max_value=1.0
         )
@@ -39,16 +38,16 @@ def create_gui():
     # Channel impressions input
     st.header("Channel Impressions")
     
-    # Create a DataFrame for channel impressions with default 0 values
+    # Create a DataFrame for channel impressions
     default_channels = {
-        "OOH": 0,
-        "CTV": 0,
-        "Creators": 0,
-        "Music Streaming": 0,
-        "Programmatic": 0,
-        "Display": 0,
-        "Social": 0,
-        "Search": 0
+        "OOH": 32905578,
+        "CTV": 164905766,
+        "Creators": 5000000,
+        "Music Streaming": 20000000,
+        "Programmatic": 10000000,
+        "Display": 227900000,
+        "Social": 251955000,
+        "Search": 3922027
     }
     
     # Convert to DataFrame for editing
@@ -57,11 +56,10 @@ def create_gui():
         columns=['Channel', 'Impressions']
     )
     
-    # Create an editable dataframe with locked channel names
+    # Create an editable dataframe
     edited_df = st.data_editor(
         df,
         num_rows="fixed",
-        disabled=["Channel"],
         column_config={
             "Channel": st.column_config.TextColumn(
                 "Channel",
@@ -72,6 +70,7 @@ def create_gui():
                 "Impressions",
                 help="Number of impressions",
                 min_value=0,
+                format="%d",
                 width="medium",
             )
         }
@@ -129,7 +128,7 @@ def create_gui():
         with col1:
             st.metric("Final Reach %", f"{results['final_reach_percent']:.1f}%")
         with col2:
-            st.metric("Final Reach (Individuals)", f"{results['final_reach']:.0f}")
+            st.metric("Final Reach (Individuals)", f"{results['final_reach']:,.0f}")
         with col3:
             st.metric("Average Frequency", f"{results['average_frequency']:.1f}")
         

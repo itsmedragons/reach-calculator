@@ -12,13 +12,13 @@ def create_gui():
     with col1:
         total_universe = st.number_input(
             "Total Universe", 
-            value=0,
+            value=1,  # Changed initial value to 1
             min_value=1
         )
         
         total_impressions = st.number_input(
             "Total Impressions",
-            value=0,
+            value=1,  # Changed initial value to 1
             min_value=1
         )
     

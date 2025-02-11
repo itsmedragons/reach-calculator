@@ -25,15 +25,15 @@ def create_gui():
     with col2:
         max_reach_percent = st.number_input(
             "Maximum Reach %",
-            value=0.0,
+            value=98.2,
             min_value=0.0,
-            max_value=100.0
+            max_value=99.8
         )
         global_overlap_factor = st.number_input(
             "Global Overlap Factor",
-            value=0.0,
-            min_value=0.0,
-            max_value=1.0
+            value=0.5,
+            min_value=0.35,
+            max_value=0.6
         )
     
     # Channel impressions input

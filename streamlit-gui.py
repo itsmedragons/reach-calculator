@@ -12,27 +12,28 @@ def create_gui():
     with col1:
         total_universe = st.number_input(
             "Total Universe", 
-            value=0,  # Changed default to 0
-            min_value=1,
-            format="%,d"  # Added thousands separator
+            value=0,
+            min_value=1
         )
+        st.write(f"Total Universe: {total_universe:,}")  # Display formatted number below
+        
         total_impressions = st.number_input(
             "Total Impressions",
-            value=0,  # Changed default to 0
-            min_value=1,
-            format="%,d"  # Added thousands separator
+            value=0,
+            min_value=1
         )
+        st.write(f"Total Impressions: {total_impressions:,}")  # Display formatted number below
     
     with col2:
         max_reach_percent = st.number_input(
             "Maximum Reach %",
-            value=0.0,  # Changed default to 0
+            value=0.0,
             min_value=0.0,
             max_value=100.0
         )
         global_overlap_factor = st.number_input(
             "Global Overlap Factor",
-            value=0.0,  # Changed default to 0
+            value=0.0,
             min_value=0.0,
             max_value=1.0
         )
@@ -58,11 +59,14 @@ def create_gui():
         columns=['Channel', 'Impressions']
     )
     
+    # Format the impressions column with commas before displaying
+    df['Impressions'] = df['Impressions'].apply(lambda x: f"{x:,}")
+    
     # Create an editable dataframe with locked channel names
     edited_df = st.data_editor(
         df,
         num_rows="fixed",
-        disabled=["Channel"],  # Lock the Channel column
+        disabled=["Channel"],
         column_config={
             "Channel": st.column_config.TextColumn(
                 "Channel",
@@ -73,7 +77,6 @@ def create_gui():
                 "Impressions",
                 help="Number of impressions",
                 min_value=0,
-                format="%,d",  # Added thousands separator
                 width="medium",
             )
         }

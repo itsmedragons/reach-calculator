@@ -8,31 +8,43 @@ class ReachFrequencyCalculator:
     """
     
     def __init__(
-        self,
-        total_universe: int,
-        total_impressions: int,
-        max_reach_percent: float,
-        global_overlap_factor: float,
-        distributed_impressions: Dict[str, int],
-        channel_penetration: Dict[str, float],
-        efficiency_factors: Dict[str, float]
-    ):
-        self.total_universe = total_universe
-        self.total_impressions = total_impressions
-        self.max_reach_percent = max_reach_percent
-        self.global_overlap_factor = global_overlap_factor
-        self.distributed_impressions = distributed_impressions
-        self.channel_penetration = channel_penetration
-        self.efficiency_factors = efficiency_factors
+    self,
+    total_universe: int,
+    total_impressions: int,
+    max_reach_percent: float,
+    global_overlap_factor: float,
+    distributed_impressions: Dict[str, int],
+    channel_penetration: Dict[str, float],
+    efficiency_factors: Dict[str, float]
+):
+    # Validate and adjust inputs for realistic scenarios
+    if total_universe < 10000:
+        raise ValueError("Universe size must be at least 10,000 for realistic calculations")
+    
+    if total_impressions < 10000:
+        raise ValueError("Total impressions must be at least 10,000 for realistic calculations")
         
-        # Initialize calculated values
-        self.channel_reach: Dict[str, float] = {}
-        self.channel_contributions: Dict[str, float] = {}
-        self.raw_total_reach: float = 0
-        self.overlapped_reach: float = 0
-        self.final_reach: float = 0
-        self.average_frequency: float = 0
-        self.effective_reach: Dict[str, float] = {}
+    # Ensure impressions aren't unrealistically high compared to universe
+    max_realistic_frequency = 20
+    if total_impressions > (total_universe * max_realistic_frequency):
+        total_impressions = total_universe * max_realistic_frequency
+        
+    self.total_universe = total_universe
+    self.total_impressions = total_impressions
+    self.max_reach_percent = max_reach_percent
+    self.global_overlap_factor = global_overlap_factor
+    self.distributed_impressions = distributed_impressions
+    self.channel_penetration = channel_penetration
+    self.efficiency_factors = efficiency_factors
+    
+    # Initialize calculated values
+    self.channel_reach = {}
+    self.channel_contributions = {}
+    self.raw_total_reach = 0
+    self.overlapped_reach = 0
+    self.final_reach = 0
+    self.average_frequency = 0
+    self.effective_reach = {}
 
     def calculate_channel_reach(self) -> Tuple[Dict[str, float], Dict[str, float]]:
         """
@@ -82,11 +94,18 @@ class ReachFrequencyCalculator:
         Calculate average frequency based on total impressions and final reach.
         """
         if self.final_reach > 0:
-            self.average_frequency = self.total_impressions / self.final_reach
-        else:
-            self.average_frequency = 0
+        raw_frequency = self.total_impressions / self.final_reach
         
-        return self.average_frequency
+        # Cap maximum frequency at 20 for realism
+        self.average_frequency = min(raw_frequency, 20.0)
+        
+        # If frequency is unrealistically low, set minimum threshold
+        if raw_frequency < 1.0:
+            self.average_frequency = 1.0
+    else:
+        self.average_frequency = 0
+    
+    return self.average_frequency
 
     def calculate_effective_reach(self, max_frequency: int = 6) -> Dict[str, float]:
         """

@@ -12,25 +12,27 @@ def create_gui():
     with col1:
         total_universe = st.number_input(
             "Total Universe", 
-            value=68500000,
-            min_value=1
+            value=0,  # Changed default to 0
+            min_value=1,
+            format="%,d"  # Added thousands separator
         )
         total_impressions = st.number_input(
             "Total Impressions",
-            value=611065006,
-            min_value=1
+            value=0,  # Changed default to 0
+            min_value=1,
+            format="%,d"  # Added thousands separator
         )
     
     with col2:
         max_reach_percent = st.number_input(
             "Maximum Reach %",
-            value=98.8,
+            value=0.0,  # Changed default to 0
             min_value=0.0,
             max_value=100.0
         )
         global_overlap_factor = st.number_input(
             "Global Overlap Factor",
-            value=0.5,
+            value=0.0,  # Changed default to 0
             min_value=0.0,
             max_value=1.0
         )
@@ -38,16 +40,16 @@ def create_gui():
     # Channel impressions input
     st.header("Channel Impressions")
     
-    # Create a DataFrame for channel impressions
+    # Create a DataFrame for channel impressions with default 0 values
     default_channels = {
-        "OOH": 32905578,
-        "CTV": 164905766,
-        "Creators": 5000000,
-        "Music Streaming": 20000000,
-        "Programmatic": 10000000,
-        "Display": 227900000,
-        "Social": 251955000,
-        "Search": 3922027
+        "OOH": 0,
+        "CTV": 0,
+        "Creators": 0,
+        "Music Streaming": 0,
+        "Programmatic": 0,
+        "Display": 0,
+        "Social": 0,
+        "Search": 0
     }
     
     # Convert to DataFrame for editing
@@ -56,10 +58,11 @@ def create_gui():
         columns=['Channel', 'Impressions']
     )
     
-    # Create an editable dataframe
+    # Create an editable dataframe with locked channel names
     edited_df = st.data_editor(
         df,
         num_rows="fixed",
+        disabled=["Channel"],  # Lock the Channel column
         column_config={
             "Channel": st.column_config.TextColumn(
                 "Channel",
@@ -70,7 +73,7 @@ def create_gui():
                 "Impressions",
                 help="Number of impressions",
                 min_value=0,
-                format="%d",
+                format="%,d",  # Added thousands separator
                 width="medium",
             )
         }

@@ -8,43 +8,31 @@ class ReachFrequencyCalculator:
     """
     
     def __init__(
-    self,
-    total_universe: int,
-    total_impressions: int,
-    max_reach_percent: float,
-    global_overlap_factor: float,
-    distributed_impressions: Dict[str, int],
-    channel_penetration: Dict[str, float],
-    efficiency_factors: Dict[str, float]
-):
-    # Validate and adjust inputs for realistic scenarios
-    if total_universe < 10000:
-        raise ValueError("Universe size must be at least 10,000 for realistic calculations")
-    
-    if total_impressions < 10000:
-        raise ValueError("Total impressions must be at least 10,000 for realistic calculations")
+        self,
+        total_universe: int,
+        total_impressions: int,
+        max_reach_percent: float,
+        global_overlap_factor: float,
+        distributed_impressions: Dict[str, int],
+        channel_penetration: Dict[str, float],
+        efficiency_factors: Dict[str, float]
+    ):
+        self.total_universe = total_universe
+        self.total_impressions = total_impressions
+        self.max_reach_percent = max_reach_percent
+        self.global_overlap_factor = global_overlap_factor
+        self.distributed_impressions = distributed_impressions
+        self.channel_penetration = channel_penetration
+        self.efficiency_factors = efficiency_factors
         
-    # Ensure impressions aren't unrealistically high compared to universe
-    max_realistic_frequency = 20
-    if total_impressions > (total_universe * max_realistic_frequency):
-        total_impressions = total_universe * max_realistic_frequency
-        
-    self.total_universe = total_universe
-    self.total_impressions = total_impressions
-    self.max_reach_percent = max_reach_percent
-    self.global_overlap_factor = global_overlap_factor
-    self.distributed_impressions = distributed_impressions
-    self.channel_penetration = channel_penetration
-    self.efficiency_factors = efficiency_factors
-    
-    # Initialize calculated values
-    self.channel_reach = {}
-    self.channel_contributions = {}
-    self.raw_total_reach = 0
-    self.overlapped_reach = 0
-    self.final_reach = 0
-    self.average_frequency = 0
-    self.effective_reach = {}
+        # Initialize calculated values
+        self.channel_reach: Dict[str, float] = {}
+        self.channel_contributions: Dict[str, float] = {}
+        self.raw_total_reach: float = 0
+        self.overlapped_reach: float = 0
+        self.final_reach: float = 0
+        self.average_frequency: float = 0
+        self.effective_reach: Dict[str, float] = {}
 
     def calculate_channel_reach(self) -> Tuple[Dict[str, float], Dict[str, float]]:
         """
@@ -94,18 +82,11 @@ class ReachFrequencyCalculator:
         Calculate average frequency based on total impressions and final reach.
         """
         if self.final_reach > 0:
-        raw_frequency = self.total_impressions / self.final_reach
+            self.average_frequency = self.total_impressions / self.final_reach
+        else:
+            self.average_frequency = 0
         
-        # Cap maximum frequency at 20 for realism
-        self.average_frequency = min(raw_frequency, 20.0)
-        
-        # If frequency is unrealistically low, set minimum threshold
-        if raw_frequency < 1.0:
-            self.average_frequency = 1.0
-    else:
-        self.average_frequency = 0
-    
-    return self.average_frequency
+        return self.average_frequency
 
     def calculate_effective_reach(self, max_frequency: int = 6) -> Dict[str, float]:
         """
@@ -141,62 +122,3 @@ class ReachFrequencyCalculator:
             'average_frequency': self.average_frequency,
             'effective_reach': self.effective_reach
         }
-
-# Example usage with printing
-if __name__ == "__main__":
-    # Initialize calculator with your data
-    calculator = ReachFrequencyCalculator(
-        total_universe=68500000,
-        total_impressions=611065006,
-        max_reach_percent=98.8,
-        global_overlap_factor=0.5,
-        distributed_impressions={
-            "OOH": 32905578,
-            "CTV": 164905766,
-            "Creators": 5000000,
-            "Music Streaming": 20000000,
-            "Programmatic": 10000000,
-            "Display": 227900000,
-            "Social": 251955000,
-            "Search": 3922027
-        },
-        channel_penetration={
-            "OOH": 0.08,
-            "CTV": 0.75,
-            "Creators": 0.17,
-            "Music Streaming": 0.686,
-            "Programmatic": 0.941,
-            "Display": 0.941,
-            "Social": 0.913,
-            "Search": 0.65
-        },
-        efficiency_factors={
-            "OOH": 0.5,
-            "CTV": 0.8,
-            "Creators": 0.8,
-            "Music Streaming": 0.7,
-            "Programmatic": 0.3,
-            "Display": 0.6,
-            "Social": 0.6,
-            "Search": 0.7
-        }
-    )
-    
-    # Run calculations and get results
-    results = calculator.run_all_calculations()
-    
-    # Print all results in a formatted way
-    print("\nChannel Contributions:")
-    for channel, contribution in results['channel_contributions'].items():
-        print(f"{channel}: {contribution:.1f}%")
-    
-    print("\nReach Metrics:")
-    print(f"Raw Total Reach: {results['raw_reach_percent']:.1f}%")
-    print(f"Overlapped Reach: {results['overlapped_reach_percent']:.1f}%")
-    print(f"Final Reach: {results['final_reach_percent']:.1f}%")
-    print(f"Final Reach (Individuals): {results['final_reach']:,.0f}")
-    print(f"Average Frequency: {results['average_frequency']:.1f}")
-    
-    print("\nEffective Reach:")
-    for freq, reach in results['effective_reach'].items():
-        print(f"{freq}: {reach:.1f}%")

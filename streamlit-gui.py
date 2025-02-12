@@ -13,14 +13,14 @@ def create_gui():
         total_universe = st.number_input(
             "Total Universe", 
             value=1000000,  # Changed initial value to 10000
-            min_value=1000000
+            min_value=1000000,
             format="%,d"
         )
         
         total_impressions = st.number_input(
             "Total Impressions",
             value=10000,  # Changed initial value to 10000
-            min_value=10000
+            min_value=10000,
             format="%,d"
         )
     

@@ -14,12 +14,14 @@ def create_gui():
             "Total Universe", 
             value=1000000,  # Changed initial value to 10000
             min_value=1000000
+            format="%,d"
         )
         
         total_impressions = st.number_input(
             "Total Impressions",
             value=10000,  # Changed initial value to 10000
             min_value=10000
+            format="%,d"
         )
     
     with col2:
@@ -141,7 +143,7 @@ def create_gui():
         with col1:
             st.metric("Final Reach %", f"{results['final_reach_percent']:.1f}%")
         with col2:
-            st.metric("Final Reach (Individuals)", f"{results['final_reach']:.0f}")
+            st.metric("Final Reach (Individuals)", f"{results['final_reach']:,d}")
         with col3:
             st.metric("Average Frequency", f"{results['average_frequency']:.1f}")
         

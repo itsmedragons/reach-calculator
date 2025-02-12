@@ -42,7 +42,10 @@ def create_gui():
     # Create a DataFrame for channel impressions with default 0 values
     default_channels = {
         "OOH": 0,
-        "CTV": 0,
+        "TV": 0,
+        "CTV/FEP": 0,
+        "YouTube": 0,
+        "Console": 0,
         "Creators": 0,
         "Music Streaming": 0,
         "Programmatic": 0,
@@ -93,7 +96,10 @@ def create_gui():
             distributed_impressions=distributed_impressions,
             channel_penetration={
                 "OOH": 0.08,
-                "CTV": 0.75,
+                "TV": 0.782,
+                "CTV/FEP": 0.75,
+                "YouTube": 0.91,
+                "Console": 0.39,
                 "Creators": 0.17,
                 "Music Streaming": 0.686,
                 "Programmatic": 0.941,
@@ -103,10 +109,13 @@ def create_gui():
             },
             efficiency_factors={
                 "OOH": 0.5,
-                "CTV": 0.8,
-                "Creators": 0.8,
-                "Music Streaming": 0.7,
-                "Programmatic": 0.3,
+                "TV": 0.8,
+                "CTV/FEP": 0.8,
+                "YouTube": 0.8,
+                "Console": 0.9,
+                "Creators": 0.85,
+                "Music Streaming": 0.75,
+                "Programmatic": 0.35,
                 "Display": 0.6,
                 "Social": 0.6,
                 "Search": 0.7

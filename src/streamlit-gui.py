@@ -18,8 +18,8 @@ def create_gui():
         
         total_impressions = st.number_input(
             "Total Impressions",
-            value=10000,  # Changed initial value to 10000
-            min_value=10000
+            value=1000000,  # Changed initial value to 10000
+            min_value=1000000
         )
     
     with col2:

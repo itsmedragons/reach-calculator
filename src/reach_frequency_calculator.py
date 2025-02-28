@@ -23,9 +23,9 @@ class ReachFrequencyCalculator:
         if not 0 <= max_reach_percent <= 99.8:
             raise ValueError("Maximum reach percentage must be between 0 and 99.8")
         
-        # Ensure overlap factor is between 0.35 and 0.6
-        if not 0.35 <= global_overlap_factor <= 0.6:
-            raise ValueError("Global overlap factor must be between 0.35 and 0.6")
+        # Ensure overlap factor is between 0.35 and 0.75
+        if not 0.35 <= global_overlap_factor <= 0.75:
+            raise ValueError("Global overlap factor must be between 0.35 and 0.75")
         
         self.total_universe = total_universe
         self.total_impressions = total_impressions

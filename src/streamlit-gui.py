@@ -33,7 +33,7 @@ def create_gui():
             "Global Overlap Factor",
             value=0.5,
             min_value=0.35,
-            max_value=0.75
+            max_value=0.6
         )
     
     # Channel impressions input
